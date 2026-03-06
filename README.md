@@ -1,4 +1,4 @@
-<h1 align="center">👋 Hi, My name is Stevel Iglesias </h1>
+<h1 align="center">👋 Hi </h1>
 
 <p align="center">
 💻 Coder at Riwi | 🔐 Cybersecurity Learner | 🚀 Self-taught Tech Enthusiast
