@@ -1,16 +1,67 @@
-## Hi there my name is stevel iglesias 👋
-![Texto alternativo del banner](https://www.google.com/imgres?q=sombrero%20blanco%20hacker%20banner%0D%0A&imgurl=https%3A%2F%2Fmedia.istockphoto.com%2Fid%2F856668672%2Fes%2Fvector%2Fagente-spy-busca-en-port%25C3%25A1til-hacker.jpg%3Fs%3D612x612%26w%3D0%26k%3D20%26c%3Dvr3lEISi8-jN6i5e0nK2qUswJHH461v1Ud7cR-lHVE0%3D&imgrefurl=https%3A%2F%2Fwww.istockphoto.com%2Fes%2Filustraciones%2Frobo-de-identidad&docid=7B5H9iZu7bBhNM&tbnid=V7Jtl1mpUiwwoM&vet=12ahUKEwiM4qbq4ouTAxU4SjABHVteLW44FBCc8A56BAgGEAE..i&w=612&h=612&hcb=2&ved=2ahUKEwiM4qbq4ouTAxU4SjABHVteLW44FBCc8A56BAgGEAE)
-<!--
-**levets01/levets01** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+<h1 align="center">👋 Hi, I'm YOUR NAME</h1>
 
-Here are some ideas to get you started:
+<p align="center">
+💻 Cybersecurity Enthusiast | 🛡️ White Hat Hacker | 🔐 Ethical Hacking
+</p>
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+---
+
+<p align="center">
+<img src="https://readme-typing-svg.herokuapp.com?color=00FF00&size=25&center=true&vCenter=true&width=600&lines=White+Hat+Hacker;Cybersecurity+Enthusiast;Ethical+Hacker;Security+Researcher">
+</p>
+
+---
+
+## 🧑‍💻 About Me
+
+- 🔐 Passionate about cybersecurity and system security  
+- 🛡️ Interested in ethical hacking and penetration testing  
+- 🌱 Currently learning advanced cybersecurity techniques  
+- 💬 Ask me about cybersecurity, Linux, and network security  
+- ⚡ Fun fact: I enjoy finding vulnerabilities and securing systems  
+🔭 I’m currently working on personal projects
+- 🌱 I’m currently learning  Python / Web Development
+- 👯 I’m looking to collaborate on open source projects
+- ⚡ Fun fact: I love learning new technologies
+🤔 I’m looking for help with advanced cybersecurity techniques
+---
+
+## 🧰 Technologies & Tools
+
+![Linux](https://img.shields.io/badge/Linux-black?style=for-the-badge&logo=linux)
+![Python](https://img.shields.io/badge/Python-blue?style=for-the-badge&logo=python)
+![Bash](https://img.shields.io/badge/Bash-grey?style=for-the-badge&logo=gnubash)
+![Git](https://img.shields.io/badge/Git-red?style=for-the-badge&logo=git)
+![HTML](https://img.shields.io/badge/HTML-orange?style=for-the-badge&logo=html5)
+
+---
+
+## 📊 GitHub Stats
+
+![GitHub stats](https://github-readme-stats.vercel.app/api?username=YOURUSERNAME&show_icons=true&theme=tokyonight)
+
+---
+
+## 🔥 GitHub Streak
+
+![GitHub Streak](https://streak-stats.demolab.com/?user=YOURUSERNAME&theme=tokyonight)
+
+---
+
+## 🧠 Top Languages
+
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=YOURUSERNAME&layout=compact&theme=tokyonight)
+
+---
+
+## 🐍 Contribution Snake
+
+![snake gif](https://github.com/YOURUSERNAME/YOURUSERNAME/blob/output/github-contribution-grid-snake.svg)
+
+---
+
+## 📫 Contact
+
+- 💼 LinkedIn: Your LinkedIn
+- 📧 Email: your@email.com
+  
