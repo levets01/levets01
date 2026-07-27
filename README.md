@@ -28,6 +28,7 @@
 ![Linux](https://img.shields.io/badge/Linux-black?style=for-the-badge&logo=linux)
 ![Python](https://img.shields.io/badge/Python-blue?style=for-the-badge&logo=python)
 ![Git](https://img.shields.io/badge/Git-red?style=for-the-badge&logo=git)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
 
 ---
