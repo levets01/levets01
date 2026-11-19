@@ -1,79 +1,36 @@
-<h1 align="center">👋 Hi </h1>
+# Stevel Iglesias
 
-<p align="center">
-💻 Coder at Riwi | 🔐 Cybersecurity Learner | 🚀 Self-taught Tech Enthusiast
-</p>
+<picture>
+  <source media="(max-width: 600px)" srcset="./assets/generated/hero-mobile.svg">
+  <img src="./assets/generated/hero.svg" width="800" alt="Stevel Iglesias, Junior Software Developer in Colombia. Studying Software Analysis and Development at SENA and Coder at Riwi.">
+</picture>
 
----
+I’m training in software analysis and development at SENA and building full-stack projects at Riwi. I’m interested in defensive cybersecurity, AI, automation, software architecture and cloud computing.
 
-<p align="center">
-<img src="https://readme-typing-svg.herokuapp.com?color=00FF00&size=25&center=true&vCenter=true&width=600&lines=Coder+at+Riwi;Cybersecurity+Learner;Future+White+Hat+Hacker;Self-Taught+Developer">
-</p>
+## GitHub activity
 
----
+<a href="https://github.com/levets01?tab=repositories"><img src="./assets/generated/stats.svg" width="572" alt="Public repositories, stars, followers, primary languages, and recent public activity"></a>
 
-## 🧑‍💻 About Me
+<a href="https://github.com/levets01"><img src="./assets/generated/contributions.svg" width="572" alt="GitHub contribution calendar for the past year"></a>
 
-- 💻 Coder at **Riwi**
-- 🌱 Currently learning **Cybersecurity and programming**
-- 🧠 I enjoy **learning in a self-taught way**
-- 🔐 Interested in **ethical hacking and system security**
-- 💬 Ask me about **technology and cybersecurity basics**
-- ⚡ Fun fact: I like exploring how systems work
+## Technologies
 
----
-## 🧰 Technologies I'm Learning
-<p align="center">
+<img src="./assets/generated/skills.svg" width="572" alt="Frontend: React, JavaScript, TypeScript, HTML, CSS. Backend: Node.js, NestJS, Express, Python. Databases: PostgreSQL, MySQL. Tools: Docker, Git, GitHub, Linux. Cloud: AWS.">
 
-<a href="https://www.linux.org/">
-  <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" />
-</a>
+Supabase and Postman are also part of my learning toolkit.
 
-<a href="https://www.python.org/">
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-</a>
+## Featured projects
 
-<a href="https://git-scm.com/">
-  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" />
-</a>
+<!-- projects:start -->
 
-<a href="https://www.mysql.com/">
-  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
-</a>
+<a href="https://github.com/levets01/backeng_node"><img src="./assets/generated/project-backeng-node.svg" alt="backeng_node — Backend API with a PostgreSQL database. TypeScript · Express · PostgreSQL · Docker. GitHub stars: 0." width="572"></a>
 
-<a href="https://supabase.com/">
-  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" />
-</a>
+<a href="https://github.com/levets01/CONTROL_IVENTARIO-RIWI"><img src="./assets/generated/project-control-iventario-riwi.svg" alt="CONTROL_IVENTARIO-RIWI — Inventory management exercise from Riwi. Python. GitHub stars: 3." width="572"></a>
 
-<a href="https://nodejs.org/">
-  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" />
-</a>
+<a href="https://github.com/levets01/SALES-CONTROL_Riwi"><img src="./assets/generated/project-sales-control-riwi.svg" alt="SALES-CONTROL_Riwi — Sales management exercise from Riwi. Python. GitHub stars: 2." width="572"></a>
 
-<a href="https://nestjs.com/">
-  <img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" />
-</a>
+<!-- projects:end -->
 
-<a href="https://www.postman.com/">
-  <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" />
-</a>
+## Contact
 
-<a href="https://www.typescriptlang.org/">
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
-</a>
-
-</p>
-## 📊 GitHub Stats
-
-![GitHub stats](https://github-readme-stats.vercel.app/api?username=YOURUSERNAME&show_icons=true&theme=tokyonight)
-
----
-
-## 🧠 Top Languages
-
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=YOURUSERNAME&layout=compact&theme=tokyonight)
-
----
-
-## 📫 Contact
-
-- 📧 Email: steveniglesias@gmail.com
+[Email](mailto:steveniglesias@gmail.com)
