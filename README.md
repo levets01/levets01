@@ -12,7 +12,7 @@
 
 <picture>
   <source media="(max-width: 760px)" srcset="./assets/generated/contributions-mobile.svg">
-  <img src="./assets/generated/contributions.svg" width="100%" alt="Calendario anual de GitHub. Contribuciones: 444.">
+  <img src="./assets/generated/contributions.svg" width="100%" alt="Calendario anual de GitHub. Contribuciones: 445.">
 </picture>
 
 <picture>
