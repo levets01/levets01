@@ -1,70 +1,53 @@
-# Mantenimiento del perfil
+# Mantenimiento del perfil de Stevel Iglesias
 
-Instala las dependencias con Python 3.12 y ejecuta los comandos desde la raíz.
+El perfil se publica con el README y los SVG de `assets/generated/`. GitHub selecciona la imagen de cada `<picture>` según el ancho de la ventana. La variante móvil entra hasta los 760 px.
+
+## Regenerar desde la raíz
+
+Usa Python 3.12. El primer script necesita acceso a GitHub. Para trabajar con la última captura guardada en `data/github_stats.json`, puedes empezar directamente por `generate_cards.py`.
 
 ```sh
 python -m pip install -r requirements.txt
 python scripts/fetch_github_data.py
+python -m unittest discover -s tests -v
 python scripts/generate_cards.py
 python scripts/validate_profile.py
-python -m unittest discover -s tests -v
 ```
 
-## Retrato y vista estática
+| Archivo | Dónde editar | Qué se regenera |
+| --- | --- | --- |
+| Foto y retrato | `assets/IMG_2087.jpg` y `scripts/generate_portrait.py` | Retrato animado, retrato estático y geometría del retrato dentro de ambos hero |
+| Terminal, tarjetas y tecnologías | `scripts/generate_cards.py` y `assets/technology-logos.json` | SVG de escritorio y móvil, incluidas las tarjetas de los proyectos seleccionados |
+| Datos públicos | `scripts/fetch_github_data.py` | `data/github_stats.json` |
+| Presentación, navegación y contacto | `README.md` | El generador solo sustituye los bloques delimitados por los comentarios de `activity`, `stack` y `projects` |
 
-El generador busca la foto original en `asset/` y `assets/`, incluidas sus subcarpetas,
-por el nombre base `IMG_2087` con su extensión real.
-Pillow verifica el formato por el contenido, corrige la orientación EXIF, encuadra y ajusta
-el contraste. En `assets/IMG_2087.jpg`, un JPEG de 341 × 481 píxeles, el generador aísla
-el fondo claro conectado al borde y usa la silueta superior para encuadrar el cabello y el
-rostro. Las filas alternas desplazan medio punto el muestreo. Los puntos tienen un diámetro
-uniforme y cambian de luminosidad con la foto. El recorte desvanece la camiseta en el borde
-inferior. Cada punto es el carácter ASCII `.` en una posición explícita del SVG.
-Se compararon rejillas de 64, 84 y 104 columnas a tamaño de presentación. La rejilla
-de escritorio tiene 84 columnas y 92 filas. En móvil se compararon 48, 60, 72 y 84
-columnas con el mismo encuadre. La versión móvil usa 60 columnas y 66 filas para mantener
-separados los puntos a esa escala. `portrait-static.svg` contiene la versión estática.
+Las tecnologías se editan en `STACK`. Cada nombre tiene un trazado de 24 × 24 unidades en el catálogo local. El generador lo incorpora al SVG junto a su etiqueta y distribuye las filas según el espacio disponible. Los logotipos proceden de [Simple Icons 11.15.0](https://github.com/simple-icons/simple-icons/tree/11.15.0).
 
-Para ajustar visualmente el encuadre, abre variantes estáticas del retrato. Los valores
-de `--focus` recorren el margen de recorte desde 0 hasta 1 en cada eje. Si encuentras un
-encuadre mejor, actualiza el par de valores de `make_rows` en `scripts/generate_cards.py`.
+## Ajustar el retrato
+
+Pillow identifica el JPEG de 341 × 481 píxeles, aplica la orientación EXIF y separa el fondo claro conectado a los bordes. El encuadre se calcula a partir de la silueta del cabello y conserva los hombros. El muestreo Lanczos, el contraste en el entorno de cada punto y la detección de bordes conservan las diferencias entre piel, pelo y rasgos. Los tonos se interpolan entre las anclas de la paleta. El verde neón acentúa los bordes. Las zonas de detalle reciben más muestras.
 
 ```sh
-python scripts/generate_portrait.py assets/IMG_2087.jpg portrait-preview.svg --focus 0.5 0.38 --static
-python scripts/generate_cards.py --static --output .preview
+python scripts/generate_portrait.py assets/IMG_2087.jpg .preview/retrato.svg --width 264 --height 292 --focus 0.5 0.38 --density 1
+python scripts/generate_portrait.py --source assets/IMG_2087.jpg --output .preview/retrato-estatico.svg --palette "#14532D,#647D73,#00FF88,#A7F3D0,#F0FFF4" --static
+python scripts/generate_cards.py --static --output .preview/estatico
 ```
 
-El README usa imágenes SVG autónomas, CSS interno y una variante del hero para pantallas
-estrechas. Las animaciones se desactivan con `prefers-reduced-motion`. El modo
-`--static` produce tarjetas en su estado final para inspección local.
+`--density` multiplica las muestras por unidad de área. El hero móvil usa 0.60 para que los puntos se distingan al reducir la imagen. `--focus` acepta dos valores de 0 a 1. La paleta predeterminada se llama `hologram`. La alternativa personalizada recibe cinco colores en el orden del ejemplo.
 
-## Datos y publicación
+Los puntos se agrupan por fase y tono en trazados de extremos redondos. Primero aparecen partículas tenues. Después se forma la silueta desde el cabello hasta los hombros y se definen los bordes del rostro. Al final, un pequeño grupo de puntos varía suavemente de intensidad dos veces. Tanto la construcción como la escritura de `whoami` y el calendario usan CSS dentro de su propio SVG. Si el visor omite las animaciones o el usuario prefiere movimiento reducido, se muestra la composición completa. El README también enlaza el retrato estático.
 
-La API REST pública de GitHub aporta el perfil, los repositorios propios y los eventos
-públicos recientes. Las estrellas se suman en repositorios propios que no son forks.
-Los lenguajes se ordenan por número de repositorios donde son el lenguaje principal.
-El calendario reutiliza las intensidades de la página pública de GitHub. Si GitHub
-cambia ese HTML o falla alguna consulta, se conserva el último valor válido de esa fuente.
-La selección de proyectos vive en `FEATURED` y solo se muestran repositorios que la API devuelve.
+## Procedencia y recuperación de datos
 
-El workflow corre a las 11:23 UTC, admite ejecución manual y se activa cuando llegan
-cambios a `main` en el generador, las pruebas, la foto, las dependencias o el propio workflow.
-Usa el token de GitHub que aporta el workflow. Para publicar, sube el cambio a la
-rama predeterminada del perfil. Si aplicas protección de rama, la política de esa rama
-debe permitir el commit automatizado para que la actualización diaria pueda publicarse.
-`README.backup.md` conserva el README anterior.
+- El perfil y los repositorios públicos aportan el número de repositorios, los seguidores, las estrellas y los lenguajes. Las estrellas se suman sobre los repositorios propios que no son forks. El gráfico de lenguajes usa como denominador los repositorios propios con lenguaje identificado. [API del perfil](https://api.github.com/users/levets01) · [Repositorios públicos](https://api.github.com/users/levets01/repos?type=owner)
+- El calendario conserva las fechas, los niveles diarios y el total del periodo que muestra GitHub. Un día activo tiene nivel mayor que cero. La mejor racha cuenta días activos consecutivos dentro del intervalo mostrado. [Calendario público](https://github.com/users/levets01/contributions)
+- Las tarjetas usan el nombre, la URL, las estrellas y el lenguaje principal de los repositorios que devuelve la API. `FEATURED` contiene la selección, las etiquetas de stack y una descripción editorial para repositorios con la descripción de GitHub vacía. La actividad resume los eventos públicos recientes. [Eventos públicos](https://api.github.com/users/levets01/events/public)
+- Si una fuente falla, se conserva la última captura de esa fuente. El proceso se detiene si falta la captura inicial. Los errores de red y los fallos transitorios del servidor tienen reintentos limitados. Cuando GitHub indica una espera larga por cuota, se conserva la captura y la siguiente ejecución vuelve a consultar.
 
-## Referencia técnica
+## GitHub Actions
 
-La referencia consultada fue la revisión `a5fc82b`. El workflow del autor lee el calendario
-público, guarda días y agregados en JSON, renderiza los SVG y versiona los cambios.
-El retrato independiente revela filas mediante recortes SMIL. El hero extrae sus filas de texto
-y aplica CSS. La tarjeta de estadísticas usa elementos SMIL `set` para mostrar fotogramas
-numéricos. En los metadatos y el árbol consultados no figuraba una licencia general.
-El perfil de Stevel usa una implementación independiente. [Archivos de referencia](https://github.com/AVIVASHISHTA29/AVIVASHISHTA29/tree/a5fc82b23b6549e360e30382609e1547df535f75)
+El workflow se ejecuta a las 11:23 UTC cada día, admite ejecución manual y responde a cambios en la foto, los generadores, los logotipos, las pruebas y su configuración. Utiliza el token temporal de Actions para la API y requiere permiso `contents: write` para publicar en la rama predeterminada. Una política de protección de rama que impida ese push quedará reflejada como un error en el paso de publicación.
 
-En este repositorio, `scripts/fetch_github_data.py` obtiene los datos de GitHub y
-`scripts/generate_cards.py` convierte el snapshot en texto, barras y celdas SVG. El heatmap usa
-el nivel diario que devuelve GitHub. SMIL revela las celdas con un barrido breve. CSS controla
-el retrato, la terminal y las barras. El gráfico de lenguajes divide el recuento de cada lenguaje
-principal entre los repositorios públicos propios, sin forks, que tienen lenguaje identificado.
+La tarea ejecuta las pruebas, regenera desde las fuentes versionadas y valida las referencias locales del README y los SVG. Solo crea un commit si el contenido cambió. Las pruebas locales pueden ejecutar esas mismas etapas hasta la validación.
+
+La referencia de diseño fue el uso de SVG autónomos y actualización desde GitHub en el [perfil de Avi Vashishta](https://github.com/AVIVASHISHTA29/AVIVASHISHTA29/tree/a5fc82b23b6549e360e30382609e1547df535f75).

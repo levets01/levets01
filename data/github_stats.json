@@ -13,25 +13,36 @@
     },
     "projects": [
       {
+        "name": "Turno_Office",
+        "description": "Una oficina 3D interactiva donde un equipo de robots prepara un Short de programación.",
+        "language": "TypeScript",
+        "stack": "React · TypeScript · Three.js",
+        "url": "https://github.com/levets01/Turno_Office",
+        "stars": 0
+      },
+      {
         "name": "backeng_node",
-        "description": "Backend API with a PostgreSQL database.",
+        "description": "API REST para gestionar solicitudes de abastecimiento.",
+        "language": "TypeScript",
         "stack": "TypeScript · Express · PostgreSQL · Docker",
         "url": "https://github.com/levets01/backeng_node",
         "stars": 0
       },
       {
-        "name": "CONTROL_IVENTARIO-RIWI",
-        "description": "Inventory management exercise from Riwi.",
-        "stack": "Python",
-        "url": "https://github.com/levets01/CONTROL_IVENTARIO-RIWI",
-        "stars": 3
-      },
-      {
         "name": "SALES-CONTROL_Riwi",
-        "description": "Sales management exercise from Riwi.",
+        "description": "Registra pedidos y calcula los ingresos del día desde la consola.",
+        "language": "Python",
         "stack": "Python",
         "url": "https://github.com/levets01/SALES-CONTROL_Riwi",
         "stars": 2
+      },
+      {
+        "name": "CONTROL_IVENTARIO-RIWI",
+        "description": "Valida precios y existencias para calcular el valor del inventario.",
+        "language": "Python",
+        "stack": "Python",
+        "url": "https://github.com/levets01/CONTROL_IVENTARIO-RIWI",
+        "stars": 3
       }
     ]
   },
@@ -422,8 +433,8 @@
       "2026-11-16": 0,
       "2026-11-17": 1,
       "2026-11-18": 0,
-      "2026-11-19": 1
+      "2026-11-19": 2
     },
-    "total": 445
+    "total": 449
   }
 }

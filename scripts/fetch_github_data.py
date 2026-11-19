@@ -1,15 +1,16 @@
 """Refresh a public GitHub snapshot, retaining the last good data on failure."""
 import argparse
-from collections import Counter
-from datetime import date
-from html.parser import HTMLParser
 import json
 import os
-from pathlib import Path
 import re
 import sys
 import time
-from urllib.error import HTTPError, URLError
+from collections import Counter
+from datetime import date
+from html.parser import HTMLParser
+from http.client import IncompleteRead
+from pathlib import Path
+from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,9 +18,10 @@ ACCOUNT = "levets01"
 API = "https://api.github.com"
 SNAPSHOT = ROOT / "data/github_stats.json"
 FEATURED = {
-    "backeng_node": ("Backend API with a PostgreSQL database.", "TypeScript · Express · PostgreSQL · Docker"),
-    "CONTROL_IVENTARIO-RIWI": ("Inventory management exercise from Riwi.", "Python"),
-    "SALES-CONTROL_Riwi": ("Sales management exercise from Riwi.", "Python"),
+    "Turno_Office": ("Una oficina 3D interactiva donde un equipo de robots prepara un Short de programación.", "React · TypeScript · Three.js"),
+    "backeng_node": ("API REST para gestionar solicitudes de abastecimiento.", "TypeScript · Express · PostgreSQL · Docker"),
+    "SALES-CONTROL_Riwi": ("Registra pedidos y calcula los ingresos del día desde la consola.", "Python"),
+    "CONTROL_IVENTARIO-RIWI": ("Valida precios y existencias para calcular el valor del inventario.", "Python"),
 }
 
 
@@ -34,12 +36,22 @@ def download(url: str) -> str:
             with urlopen(Request(url, headers=headers), timeout=20) as response:
                 return response.read().decode("utf-8")
         except HTTPError as error:
-            retry = error.code >= 500 or error.code == 429
+            limited = error.code in (403, 429) and (
+                error.code == 429 or error.headers.get("X-RateLimit-Remaining") == "0"
+                or "Retry-After" in error.headers
+            )
+            retry = error.code >= 500 or limited
             if not retry or attempt == 2:
                 raise
             delay = error.headers.get("Retry-After", "")
-            time.sleep(min(int(delay), 10) if delay.isdigit() else 2 ** attempt)
-        except (URLError, TimeoutError):
+            reset = error.headers.get("X-RateLimit-Reset", "")
+            wait = int(delay) if delay.isdigit() else 2 ** attempt
+            if limited and reset.isdigit():
+                wait = max(wait, int(reset) - time.time() + 1)
+            if wait > 20:
+                raise
+            time.sleep(wait)
+        except (OSError, IncompleteRead):
             if attempt == 2:
                 raise
             time.sleep(2 ** attempt)
@@ -87,6 +99,8 @@ def calendar_snapshot(html: str) -> dict:
     first, last = (date.fromisoformat(day) for day in (min(parser.days), max(parser.days)))
     if (last - first).days + 1 != len(parser.days):
         raise ValueError("GitHub contribution calendar has missing dates")
+    if parser.total is None:
+        raise ValueError("GitHub contribution calendar is missing its total")
     return {"days": dict(sorted(parser.days.items())), "total": parser.total}
 
 
@@ -100,7 +114,8 @@ def repository_snapshot(user: dict, repos: list[dict]) -> dict:
         "stars": sum(repo["stargazers_count"] for repo in owned),
         "languages": dict(sorted(languages.items(), key=lambda item: (-item[1], item[0]))),
         "projects": [
-            {"name": name, "description": description, "stack": stack,
+            {"name": name, "description": by_name[name].get("description") or description,
+             "language": by_name[name]["language"], "stack": stack,
              "url": by_name[name]["html_url"], "stars": by_name[name]["stargazers_count"]}
             for name, (description, stack) in FEATURED.items() if name in by_name
         ],
@@ -133,8 +148,10 @@ def refresh(snapshot: dict) -> dict:
     for key, loader in sources.items():
         try:
             snapshot[key] = loader()
-        except (URLError, TimeoutError, ValueError, KeyError, TypeError) as error:
+        except (OSError, IncompleteRead, ValueError, KeyError, TypeError) as error:
             print(f"{key}: {error}; retaining last available snapshot", file=sys.stderr)
+            if key not in snapshot:
+                raise RuntimeError(f"No usable data for {key}") from error
     return snapshot
 
 
@@ -157,7 +174,7 @@ def main() -> None:
         snapshot = refresh(snapshot)
     SNAPSHOT.parent.mkdir(exist_ok=True)
     replacement = SNAPSHOT.with_suffix(".tmp.json")
-    replacement.write_text(json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    replacement.write_text(json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
     replacement.replace(SNAPSHOT)
 
 

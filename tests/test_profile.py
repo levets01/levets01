@@ -1,19 +1,34 @@
+import subprocess
+import sys
+import unittest
+import xml.etree.ElementTree as ET
 from datetime import date, timedelta
 from pathlib import Path
-import sys
 from tempfile import TemporaryDirectory
-import unittest
 from unittest.mock import patch
 from urllib.error import URLError
-import xml.etree.ElementTree as ET
 
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from fetch_github_data import calendar_snapshot, refresh, repository_snapshot
-from generate_cards import contributions, hero, project, technology
-from generate_portrait import GRID, make_rows, portrait_svg, source_image
+from generate_cards import (
+    STACK,
+    activity_summary,
+    contributions,
+    hero,
+    project,
+    replace_sections,
+    stats,
+    technology,
+)
+from generate_portrait import (
+    create_portrait,
+    portrait_svg,
+    sample_portrait,
+    source_image,
+)
 from validate_profile import validate
 
 
@@ -54,17 +69,21 @@ class ProfileTests(unittest.TestCase):
             Image.linear_gradient("L").save(path)
             original = path.read_bytes()
             self.assertEqual(source_image(directory), path)
-            rows = make_rows(path, (.5, .38))
-            self.assertEqual(len(rows), GRID[1])
-            self.assertTrue(all(len(row) == GRID[0] for row in rows))
+            portrait = sample_portrait(path, 90, 110, focus=(.5, .38))
+            sparse = sample_portrait(path, 90, 110, density=.5)
+            self.assertLess(sparse.markup.count("h0"), portrait.markup.count("h0"))
+            self.assertEqual(portrait, sample_portrait(path, 90, 110))
             self.assertEqual(path.read_bytes(), original)
             svg = directory / "portrait.svg"
-            svg.write_text(portrait_svg(rows), encoding="utf-8")
+            svg.write_text(portrait_svg(portrait), encoding="utf-8")
             validate(svg)
             self.assertIn("prefers-reduced-motion", svg.read_text(encoding="utf-8"))
-            self.assertNotIn("@keyframes", portrait_svg(rows, static=True))
+            self.assertNotIn("@keyframes", portrait_svg(portrait, static=True))
+            create_portrait(path, svg, 90, 110, palette=("#000000", "#852963", "#468741", "#FB78BC", "#EEF0FF"), static=True)
+            self.assertIn('viewBox="0 0 90 110"', svg.read_text(encoding="utf-8"))
+            self.assertIn("#852963", svg.read_text(encoding="utf-8"))
             for mobile in (False, True):
-                svg.write_text(hero(rows, mobile, False), encoding="utf-8")
+                svg.write_text(hero(portrait, mobile, False), encoding="utf-8")
                 validate(svg)
 
     def test_project_escapes_xml(self):
@@ -73,6 +92,20 @@ class ProfileTests(unittest.TestCase):
         self.assertIn("A&amp;B", svg)
         self.assertIn("0 GitHub stars", svg)
 
+    def test_portrait_cli_accepts_both_path_syntaxes(self):
+        script = Path(__file__).resolve().parents[1] / "scripts/generate_portrait.py"
+        with TemporaryDirectory() as folder:
+            photo, svg = Path(folder) / "source.png", Path(folder) / "portrait.svg"
+            Image.linear_gradient("L").save(photo)
+            options = ["--width", "96", "--height", "108", "--focus", ".45", ".3",
+                       "--density", ".75", "--palette", "hologram", "--static"]
+            subprocess.run([sys.executable, script, photo, svg, *options], check=True)
+            positional = svg.read_bytes()
+            subprocess.run([sys.executable, script, "--source", photo, "--output", svg, *options], check=True)
+            self.assertEqual(svg.read_bytes(), positional)
+            self.assertEqual(ET.parse(svg).getroot().get("viewBox"), "0 0 96 108")
+            self.assertNotIn(b"@keyframes", positional)
+
     def test_language_shares_follow_snapshot(self):
         counts = {"repositories": {"languages": {"Python": 3, "TypeScript": 1}}}
         self.assertIn("75.0%", technology(counts))
@@ -80,12 +113,53 @@ class ProfileTests(unittest.TestCase):
         self.assertIn("50.0%", technology(counts))
         self.assertNotIn("75.0%", technology(counts))
 
-    def test_static_calendar_contains_all_data_without_smil(self):
+    def test_technology_labels_have_embedded_logos_in_both_sizes(self):
+        names = [tech for _, stack in STACK for tech in stack.split(" · ")]
+        for mobile in (False, True):
+            card = ET.fromstring(technology({}, mobile))
+            paths = card.findall(".//{*}path[@aria-hidden='true']")
+            self.assertEqual(len({node.get("d") for node in paths}), len(names))
+            self.assertTrue(set(names) <= {node.text for node in card.findall(".//{*}text")})
+
+    def test_staggered_calendar_has_a_static_final_frame(self):
         calendar = {"calendar": {"days": {"2026-11-18": 3, "2026-11-19": 0}, "total": 2}}
-        self.assertIn("<animate ", contributions(calendar))
+        self.assertIn('class="entry"', contributions(calendar))
         still = contributions(calendar, static=True)
-        self.assertNotIn("<animate ", still)
+        self.assertNotIn("@keyframes", still)
         self.assertIn("2 contribuciones", still)
+
+    def test_four_metrics_use_snapshot_including_zero(self):
+        snapshot = {"repositories": {"public_repos": 19, "followers": 0, "stars": 23},
+                    "calendar": {"total": 117}}
+        for mobile in (False, True):
+            markup = stats(snapshot, mobile)
+            for value in (19, 0, 23, 117):
+                self.assertIn(f">{value}</text>", markup)
+            self.assertIn(">—</text>", stats({}, mobile))
+
+    def test_project_metadata_uses_github(self):
+        repo = {"name": "Turno_Office", "fork": False, "language": "Rust",
+                "description": "Descripción actualizada", "stargazers_count": 12,
+                "html_url": "https://github.com/levets01/Turno_Office"}
+        item, = repository_snapshot({"public_repos": 1, "followers": 0}, [repo])["projects"]
+        self.assertEqual(item["description"], repo["description"])
+        self.assertEqual(item["language"], repo["language"])
+        self.assertEqual(item["stars"], 12)
+        self.assertIn("Lenguaje principal · Rust", project(item))
+
+    def test_active_days_and_longest_streak(self):
+        days = {"2026-11-19": 1, "2026-11-15": 1, "2026-11-14": 4,
+                "2026-11-16": 0, "2026-11-17": 2}
+        self.assertEqual(activity_summary(days), (4, 2))
+        self.assertEqual(activity_summary({}), (0, 0))
+
+    def test_regeneration_preserves_authored_markdown(self):
+        markdown = "# Mi perfil\n<!-- activity:start -->anterior<!-- activity:end -->\nMi contacto\n"
+        updated = replace_sections(markdown, {"activity": "nuevo"})
+        self.assertEqual(updated, "# Mi perfil\n<!-- activity:start -->\n\nnuevo\n\n<!-- activity:end -->\nMi contacto\n")
+        self.assertEqual(replace_sections(updated, {"activity": "nuevo"}), updated)
+        with self.assertRaises(ValueError):
+            replace_sections(markdown, {"projects": "incompleto"})
 
 
 if __name__ == "__main__":

@@ -11,6 +11,7 @@ on:
       - 'tests/**'
       - 'asset/**/IMG_2087*'
       - 'assets/**/IMG_2087*'
+      - 'assets/technology-logos.json'
       - 'requirements.txt'
       - '.github/workflows/update-profile.yml'
 
