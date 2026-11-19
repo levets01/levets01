@@ -1,18 +1,5 @@
 
 <!-- dashboard:start -->
-
-<div align="center">
-
-# STEVEL IGLESIAS
-
-**Junior Software Developer | Full Stack | Cybersecurity**
-
-Tecnólogo en formación en Análisis y Desarrollo de Software — **SENA**
-
-**Riwi Coder** · Colombia 🇨🇴
-
-</div>
-
 <picture>
   <source media="(max-width: 760px)" srcset="./assets/generated/hero-mobile.svg">
   <img src="./assets/generated/hero.svg" width="100%" alt="Presentación animada de Stevel Iglesias">
