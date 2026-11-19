@@ -1,136 +1,176 @@
-"""Build a grayscale ASCII portrait from the original image."""
 
-import argparse
-from collections import defaultdict
 from pathlib import Path
+from PIL import Image, ImageOps, ImageEnhance, ImageFilter
+from html import escape
+import argparse
+import math
+import random
 
-from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps
+ROOT = Path(__file__).resolve().parents[1]
 
-SIZE = (224, 246)
-GRID = (84, 92)
-ROW_CSS = """
-.row { animation: reveal 260ms ease-out both; }
-@keyframes reveal { from { opacity: 0; } to { opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .row { animation: none; } }
-"""
+PALETTE = [
+    "#14532D",  # sombras
+    "#365C4A",  # verde oscuro
+    "#647D73",  # gris verdoso
+    "#A7F3D0",  # verde suave
+    "#F0FFF4",  # luces
+]
 
+def create_portrait(source, output, width=210, height=235):
+    random.seed(42)
 
-def source_image(project_root: Path) -> Path | None:
-    files = [
-        path
-        for name in ("asset", "assets")
-        for path in (project_root / name).rglob("*")
-        if path.stem.casefold() == "img_2087" and path.is_file()
+    image = Image.open(source).convert("RGB")
+
+    # Recorte centrado para conservar rostro y cabello.
+    image = ImageOps.fit(
+        image,
+        (width, height),
+        method=Image.Resampling.LANCZOS,
+        centering=(0.5, 0.36),
+    )
+
+    gray = ImageOps.grayscale(image)
+    gray = ImageEnhance.Contrast(gray).enhance(1.65)
+    gray = ImageEnhance.Sharpness(gray).enhance(1.45)
+
+    # Bordes para resaltar ojos, nariz, boca y cabello.
+    edges = gray.filter(ImageFilter.FIND_EDGES)
+    edges = ImageEnhance.Contrast(edges).enhance(1.8)
+
+    # Estimación sencilla del fondo usando las esquinas.
+    corners = [
+        image.getpixel((0, 0)),
+        image.getpixel((width - 1, 0)),
+        image.getpixel((0, height - 1)),
+        image.getpixel((width - 1, height - 1)),
     ]
-    if len(files) > 1:
-        raise ValueError(f"Multiple portrait sources: {', '.join(map(str, files))}")
-    return next(iter(files), None)
-
-
-def frame_portrait(image: Image.Image, focus: tuple[float, float]) -> Image.Image:
-    """Isolate the sitter against the light studio backdrop and frame the head."""
-    border = image.point(lambda level: 255 if level >= 243 else 0)
-    # The padding connects all exterior edges without erasing interior highlights.
-    mask = ImageOps.expand(border, border=1, fill=255)
-    ImageDraw.floodfill(mask, (0, 0), 128)
-    foreground = mask.crop((1, 1, image.width + 1, image.height + 1)).point(
-        lambda level: 0 if level == 128 else 255
+    background = tuple(
+        sum(pixel[channel] for pixel in corners) / 4
+        for channel in range(3)
     )
-    head_band = image.crop((0, 0, image.width, max(1, round(image.height * 0.56))))
-    bounds = head_band.point(lambda level: 255 if level < 160 else 0).getbbox()
-    enhanced = image.filter(
-        ImageFilter.UnsharpMask(radius=1.6, percent=175, threshold=2)
-    )
-    tones = enhanced.point(lambda value: min(255, round(33 + value * 1.44)))
-    matte = foreground.filter(ImageFilter.MinFilter(3)).filter(
-        ImageFilter.GaussianBlur(0.45)
-    )
-    isolated = Image.composite(tones, Image.new("L", image.size), matte)
-    if bounds and foreground.getpixel((0, 0)) == 0:
-        left, top, right, _ = bounds
-        width = min(image.width, round((right - left) * 1.15))
-        height = min(image.height, round(width * SIZE[1] / SIZE[0]))
-        x = max(
-            0, min(image.width - width, round((left + right) / 2 - width * focus[0]))
-        )
-        y = max(0, min(image.height - height, round(top - height * 0.17 * focus[1])))
-        isolated = isolated.crop((x, y, x + width, y + height))
-    crop = ImageOps.fit(isolated, SIZE, Image.Resampling.LANCZOS, centering=focus)
-    # Fade only the base of the shoulders into the surrounding terminal surface.
-    fade = Image.new("L", (1, SIZE[1]))
-    fade.putdata(
-        [round(255 * min(1, (1 - y / (SIZE[1] - 1)) / 0.17)) for y in range(SIZE[1])]
-    )
-    return ImageChops.multiply(crop, fade.resize(SIZE))
 
+    def distance(a, b):
+        return math.sqrt(sum((a[i] - b[i]) ** 2 for i in range(3)))
 
-def make_rows(path: Path, focus: tuple[float, float], grid_size=GRID) -> list[bytes]:
-    with Image.open(path) as original:
-        original.verify()
-    with Image.open(path) as original:
-        image = ImageOps.exif_transpose(original).convert("L")
-    width, height = grid_size
-    grid = frame_portrait(image, focus).resize(
-        (2 * width, height), Image.Resampling.LANCZOS
-    )
-    return [
-        grid.crop((0, y, grid.width, y + 1)).tobytes()[y % 2 :: 2]
-        for y in range(height)
-    ]
+    particles = []
 
+    # Cuadrícula de partículas.
+    step = 2.6
+    cols = int(width / step)
+    rows = int(height / step)
 
-def portrait_markup(rows: list[bytes]) -> str:
-    pitch = SIZE[0] / len(rows[0])
-    glyph_style = (
-        '<g font-family="Consolas,monospace" font-size="5.1" font-weight="700" '
-        'text-rendering="geometricPrecision" text-anchor="middle" stroke-width=".65" '
-        f'stroke-linejoin="round" transform="scale({pitch / 2:.5f})">'
-    )
-    parts = [glyph_style]
-    for index, row in enumerate(rows):
-        groups: dict[int, list[str]] = defaultdict(list)
-        for column, luminance in enumerate(row):
-            if luminance >= 24:
-                shade = min(15, max(1, round(luminance / 17)))
-                groups[shade].append(str(column * 2))
-        y = (index + 0.5) * SIZE[1] / len(rows) * 2 / pitch
-        parts.append(
-            f'<g class="row" transform="translate({0.5 + index % 2} {y:.2f})" '
-            f'style="animation-delay:{index * 11}ms">'
-        )
-        for shade, positions in groups.items():
-            color = f"{shade:x}" * 3
-            # Each ASCII full stop has its own sample position and luminance.
-            parts.append(
-                f'<text fill="#{color}" stroke="#{color}" y=".4" '
-                f'x="{" ".join(positions)}">{"." * len(positions)}</text>'
+    for row in range(rows):
+        for col in range(cols):
+            x = int(col * step)
+            y = int(row * step)
+
+            if x >= width or y >= height:
+                continue
+
+            pixel = image.getpixel((x, y))
+            luminance = gray.getpixel((x, y)) / 255
+            edge = edges.getpixel((x, y)) / 255
+
+            # Evitar partículas de fondo muy parecidas
+            # al color de las esquinas.
+            bg_distance = distance(pixel, background)
+
+            if bg_distance < 25 and edge < 0.16:
+                continue
+
+            # Más detalle en bordes y rasgos faciales.
+            detail = min(1, luminance * 0.75 + edge * 0.55)
+
+            if detail < 0.12:
+                continue
+
+            color_index = min(
+                len(PALETTE) - 1,
+                int(detail * len(PALETTE))
             )
-        parts.append("</g>")
-    return "".join([*parts, "</g>"])
+            color = PALETTE[color_index]
 
+            radius = 0.30 + detail * 0.48
+            opacity = min(1, 0.38 + detail * 0.62)
 
-def portrait_svg(rows: list[bytes], static: bool = False) -> str:
-    return (
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {SIZE[0]} {SIZE[1]}" '
-        'role="img" aria-labelledby="title"><title id="title">Particle portrait of Stevel Iglesias</title>'
-        f'<style>{"" if static else ROW_CSS}</style><rect width="100%" height="100%" '
-        f'fill="#05090D"/>{portrait_markup(rows)}</svg>\n'
-    )
+            # Pequeñas variaciones naturales.
+            px = x + random.uniform(-0.24, 0.24)
+            py = y + random.uniform(-0.24, 0.24)
 
+            # Revelado por filas, desde el cabello.
+            delay = (y / height) * 2.2 + random.uniform(0, 0.16)
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("image", type=Path)
-    parser.add_argument("output", type=Path)
-    parser.add_argument("--focus", nargs=2, type=float, default=(0.5, 0.38))
-    parser.add_argument("--static", action="store_true")
-    args = parser.parse_args()
-    if not all(0 <= value <= 1 for value in args.focus):
-        parser.error("--focus values must be between 0 and 1")
-    args.output.write_text(
-        portrait_svg(make_rows(args.image, args.focus), args.static), encoding="utf-8"
-    )
+            particles.append(
+                f'<circle cx="{px:.2f}" cy="{py:.2f}" '
+                f'r="{radius:.2f}" fill="{color}" '
+                f'opacity="{opacity:.2f}" '
+                f'style="--delay:{delay:.2f}s"/>'
+            )
+
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg"
+      width="{width}" height="{height}"
+      viewBox="0 0 {width} {height}"
+      role="img"
+      aria-label="Retrato de Stevel Iglesias formado por partículas animadas">
+
+<defs>
+  <style>
+    circle {{
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: reveal 0.65s ease-out both;
+      animation-delay: var(--delay);
+    }}
+
+    @keyframes reveal {{
+      from {{
+        opacity: 0;
+        transform: scale(0.15);
+      }}
+      to {{
+        transform: scale(1);
+      }}
+    }}
+
+    @media (prefers-reduced-motion: reduce) {{
+      circle {{
+        animation: none !important;
+      }}
+    }}
+  </style>
+</defs>
+
+<g>
+{''.join(particles)}
+</g>
+
+</svg>"""
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(svg, encoding="utf-8")
+
+    print(f"Retrato generado: {output}")
+    print(f"Partículas: {len(particles)}")
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--source",
+        default=str(ROOT / "assets" / "IMG_2087.jpg")
+    )
+    parser.add_argument(
+        "--output",
+        default=str(ROOT / "assets" / "generated" / "portrait.svg")
+    )
+    parser.add_argument("--width", type=int, default=210)
+    parser.add_argument("--height", type=int, default=235)
+
+    args = parser.parse_args()
+
+    create_portrait(
+        Path(args.source),
+        Path(args.output),
+        args.width,
+        args.height,
+    )
