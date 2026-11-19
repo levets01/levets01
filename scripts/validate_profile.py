@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 from fetch_github_data import ROOT
 
 SVG = "{http://www.w3.org/2000/svg}"
-ALLOWED = {"svg", "title", "desc", "style", "rect", "text", "g", "defs", "clipPath", "tspan", "path"}
+ALLOWED = {"svg", "title", "desc", "style", "rect", "text", "g", "defs", "clipPath", "tspan", "path", "animate"}
 
 
 def validate(path: Path) -> None:
@@ -18,6 +18,8 @@ def validate(path: Path) -> None:
     for node in root.iter():
         if not node.tag.startswith(SVG) or node.tag.removeprefix(SVG) not in ALLOWED:
             raise ValueError(f"{path}: unexpected element {node.tag}")
+        if node.tag == SVG + "animate" and node.get("attributeName") not in {"x", "width"}:
+            raise ValueError(f"{path}: unexpected animated attribute")
         for key, value in node.attrib.items():
             if key.startswith("on") or "href" in key or re.search(r"url\(\s*[^#]", value):
                 raise ValueError(f"{path}: unexpected resource or handler")

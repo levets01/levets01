@@ -12,7 +12,7 @@ from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from fetch_github_data import calendar_snapshot, refresh, repository_snapshot
-from generate_cards import contributions, hero, project
+from generate_cards import contributions, hero, project, technology
 from generate_portrait import GRID, make_rows, portrait_svg, source_image
 from validate_profile import validate
 
@@ -72,6 +72,20 @@ class ProfileTests(unittest.TestCase):
         ET.fromstring(svg)
         self.assertIn("A&amp;B", svg)
         self.assertIn("0 GitHub stars", svg)
+
+    def test_language_shares_follow_snapshot(self):
+        counts = {"repositories": {"languages": {"Python": 3, "TypeScript": 1}}}
+        self.assertIn("75.0%", technology(counts))
+        counts["repositories"]["languages"]["TypeScript"] = 3
+        self.assertIn("50.0%", technology(counts))
+        self.assertNotIn("75.0%", technology(counts))
+
+    def test_static_calendar_contains_all_data_without_smil(self):
+        calendar = {"calendar": {"days": {"2026-11-18": 3, "2026-11-19": 0}, "total": 2}}
+        self.assertIn("<animate ", contributions(calendar))
+        still = contributions(calendar, static=True)
+        self.assertNotIn("<animate ", still)
+        self.assertIn("2 contribuciones", still)
 
 
 if __name__ == "__main__":

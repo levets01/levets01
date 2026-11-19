@@ -4,6 +4,15 @@ on:
   schedule:
     - cron: '23 11 * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'tests/**'
+      - 'asset/**/IMG_2087*'
+      - 'assets/**/IMG_2087*'
+      - 'requirements.txt'
+      - '.github/workflows/update-profile.yml'
 
 permissions:
   contents: write

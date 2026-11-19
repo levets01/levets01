@@ -1,36 +1,59 @@
-# Stevel Iglesias
+<!-- dashboard:start -->
 
 <picture>
-  <source media="(max-width: 600px)" srcset="./assets/generated/hero-mobile.svg">
-  <img src="./assets/generated/hero.svg" width="800" alt="Stevel Iglesias, Junior Software Developer in Colombia. Studying Software Analysis and Development at SENA and Coder at Riwi.">
+  <source media="(max-width: 760px)" srcset="./assets/generated/hero-mobile.svg">
+  <img src="./assets/generated/hero.svg" width="100%" alt="Stevel Iglesias | Junior Software Developer | SENA ADSO en formación | Riwi Coder | Full Stack &amp; Cybersecurity | Colombia.">
 </picture>
 
-I’m training in software analysis and development at SENA and building full-stack projects at Riwi. I’m interested in defensive cybersecurity, AI, automation, software architecture and cloud computing.
+<picture>
+  <source media="(max-width: 760px)" srcset="./assets/generated/stats-mobile.svg">
+  <img src="./assets/generated/stats.svg" width="100%" alt="Repositorios públicos: 51. Estrellas recibidas: 49. Seguidores: 4.">
+</picture>
 
-## GitHub activity
+<picture>
+  <source media="(max-width: 760px)" srcset="./assets/generated/contributions-mobile.svg">
+  <img src="./assets/generated/contributions.svg" width="100%" alt="Calendario anual de GitHub. Contribuciones: 444.">
+</picture>
 
-<a href="https://github.com/levets01?tab=repositories"><img src="./assets/generated/stats.svg" width="572" alt="Public repositories, stars, followers, primary languages, and recent public activity"></a>
+<picture>
+  <source media="(max-width: 760px)" srcset="./assets/generated/skills-mobile.svg">
+  <img src="./assets/generated/skills.svg" width="100%" alt="Frontend: React · JavaScript · TypeScript · HTML · CSS. Backend: Node.js · NestJS · Express · Python. Datos: PostgreSQL · MySQL · Supabase. DevOps: Docker · Git · GitHub · Linux · AWS. Herramientas: Postman. Repositorios públicos propios sin forks por lenguaje principal: Python (10), TypeScript (8), CSS (6), HTML (5), JavaScript (4), Shell (1).">
+</picture>
 
-<a href="https://github.com/levets01"><img src="./assets/generated/contributions.svg" width="572" alt="GitHub contribution calendar for the past year"></a>
+### Proyectos destacados
 
-## Technologies
+<a href="https://github.com/levets01/backeng_node">
+<picture>
+  <source media="(max-width: 760px)" srcset="./assets/generated/project-backeng-node-mobile.svg">
+  <img src="./assets/generated/project-backeng-node.svg" width="100%" alt="backeng_node. Backend API with a PostgreSQL database. TypeScript · Express · PostgreSQL · Docker. 0 GitHub stars.">
+</picture>
+</a>
 
-<img src="./assets/generated/skills.svg" width="572" alt="Frontend: React, JavaScript, TypeScript, HTML, CSS. Backend: Node.js, NestJS, Express, Python. Databases: PostgreSQL, MySQL. Tools: Docker, Git, GitHub, Linux. Cloud: AWS.">
+<a href="https://github.com/levets01/CONTROL_IVENTARIO-RIWI">
+<picture>
+  <source media="(max-width: 760px)" srcset="./assets/generated/project-control-iventario-riwi-mobile.svg">
+  <img src="./assets/generated/project-control-iventario-riwi.svg" width="100%" alt="CONTROL_IVENTARIO-RIWI. Inventory management exercise from Riwi. Python. 3 GitHub stars.">
+</picture>
+</a>
 
-Supabase and Postman are also part of my learning toolkit.
+<a href="https://github.com/levets01/SALES-CONTROL_Riwi">
+<picture>
+  <source media="(max-width: 760px)" srcset="./assets/generated/project-sales-control-riwi-mobile.svg">
+  <img src="./assets/generated/project-sales-control-riwi.svg" width="100%" alt="SALES-CONTROL_Riwi. Sales management exercise from Riwi. Python. 2 GitHub stars.">
+</picture>
+</a>
 
-## Featured projects
+<details>
+<summary>Actividad pública reciente</summary>
 
-<!-- projects:start -->
+- 2026-11-17 UTC · Push · levets01/Turno_Office
+- 2026-11-17 UTC · Push · levets01/Turno_Office
+- 2026-11-17 UTC · Create · levets01/Turno_Office
 
-<a href="https://github.com/levets01/backeng_node"><img src="./assets/generated/project-backeng-node.svg" alt="backeng_node — Backend API with a PostgreSQL database. TypeScript · Express · PostgreSQL · Docker. GitHub stars: 0." width="572"></a>
+</details>
 
-<a href="https://github.com/levets01/CONTROL_IVENTARIO-RIWI"><img src="./assets/generated/project-control-iventario-riwi.svg" alt="CONTROL_IVENTARIO-RIWI — Inventory management exercise from Riwi. Python. GitHub stars: 3." width="572"></a>
+<!-- dashboard:end -->
 
-<a href="https://github.com/levets01/SALES-CONTROL_Riwi"><img src="./assets/generated/project-sales-control-riwi.svg" alt="SALES-CONTROL_Riwi — Sales management exercise from Riwi. Python. GitHub stars: 2." width="572"></a>
+Estudio Análisis y Desarrollo de Software en el SENA y desarrollo proyectos full stack en Riwi. Me interesan la ciberseguridad defensiva, la inteligencia artificial, la automatización, la arquitectura de software y el cloud computing.
 
-<!-- projects:end -->
-
-## Contact
-
-[Email](mailto:steveniglesias@gmail.com)
+[Contacto por correo](mailto:steveniglesias@gmail.com) · [Retrato estático](./assets/generated/portrait-static.svg)
