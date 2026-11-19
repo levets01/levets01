@@ -1,59 +1,129 @@
-<!-- dashboard:start -->
+\<!-- dashboard\:start -->
 
-<picture>
-  <source media="(max-width: 760px)" srcset="./assets/generated/hero-mobile.svg">
-  <img src="./assets/generated/hero.svg" width="100%" alt="Stevel Iglesias | Junior Software Developer | SENA ADSO en formación | Riwi Coder | Full Stack &amp; Cybersecurity | Colombia.">
-</picture>
+\<div align="center">
 
-<picture>
-  <source media="(max-width: 760px)" srcset="./assets/generated/stats-mobile.svg">
-  <img src="./assets/generated/stats.svg" width="100%" alt="Repositorios públicos: 51. Estrellas recibidas: 49. Seguidores: 4.">
-</picture>
+# STEVEL IGLESIAS
 
-<picture>
-  <source media="(max-width: 760px)" srcset="./assets/generated/contributions-mobile.svg">
-  <img src="./assets/generated/contributions.svg" width="100%" alt="Calendario anual de GitHub. Contribuciones: 445.">
-</picture>
+**Junior Software Developer · Full Stack Development · Cybersecurity**
 
-<picture>
-  <source media="(max-width: 760px)" srcset="./assets/generated/skills-mobile.svg">
-  <img src="./assets/generated/skills.svg" width="100%" alt="Frontend: React · JavaScript · TypeScript · HTML · CSS. Backend: Node.js · NestJS · Express · Python. Datos: PostgreSQL · MySQL · Supabase. DevOps: Docker · Git · GitHub · Linux · AWS. Herramientas: Postman. Repositorios públicos propios sin forks por lenguaje principal: Python (10), TypeScript (8), CSS (6), HTML (5), JavaScript (4), Shell (1).">
-</picture>
+Tecnólogo en formación en Análisis y Desarrollo de Software — **SENA**
+**Coder en Riwi** · Colombia 🇨🇴
 
-### Proyectos destacados
+\
 
-<a href="https://github.com/levets01/backeng_node">
-<picture>
-  <source media="(max-width: 760px)" srcset="./assets/generated/project-backeng-node-mobile.svg">
-  <img src="./assets/generated/project-backeng-node.svg" width="100%" alt="backeng_node. Backend API with a PostgreSQL database. TypeScript · Express · PostgreSQL · Docker. 0 GitHub stars.">
-</picture>
-</a>
 
-<a href="https://github.com/levets01/CONTROL_IVENTARIO-RIWI">
-<picture>
-  <source media="(max-width: 760px)" srcset="./assets/generated/project-control-iventario-riwi-mobile.svg">
-  <img src="./assets/generated/project-control-iventario-riwi.svg" width="100%" alt="CONTROL_IVENTARIO-RIWI. Inventory management exercise from Riwi. Python. 3 GitHub stars.">
-</picture>
-</a>
+\</div>
 
-<a href="https://github.com/levets01/SALES-CONTROL_Riwi">
-<picture>
-  <source media="(max-width: 760px)" srcset="./assets/generated/project-sales-control-riwi-mobile.svg">
-  <img src="./assets/generated/project-sales-control-riwi.svg" width="100%" alt="SALES-CONTROL_Riwi. Sales management exercise from Riwi. Python. 2 GitHub stars.">
-</picture>
-</a>
+---
 
-<details>
-<summary>Actividad pública reciente</summary>
+\<!-- HERO ANIMADO -->
 
-- 2026-11-17 UTC · Push · levets01/Turno_Office
-- 2026-11-17 UTC · Push · levets01/Turno_Office
-- 2026-11-17 UTC · Create · levets01/Turno_Office
+\<picture>
+&#x20; \<source media="(max-width: 760px)" srcset="./assets/generated/hero-mobile.svg">
+&#x20; \<img src="./assets/generated/hero.svg" width="100%" alt="Presentación animada de Stevel Iglesias como Junior Software Developer.">
+\</picture>
 
-</details>
+---
 
-<!-- dashboard:end -->
+### `> github.stats --user levets01`
 
-Estudio Análisis y Desarrollo de Software en el SENA y desarrollo proyectos full stack en Riwi. Me interesan la ciberseguridad defensiva, la inteligencia artificial, la automatización, la arquitectura de software y el cloud computing.
+\<picture>   \<source media="(max-width: 760px)" srcset="./assets/generated/stats-mobile.svg">   \<img src="./assets/generated/stats.svg" width="100%" alt="Estadísticas actualizadas del perfil de GitHub levets01."> \</picture>
 
-[Contacto por correo](mailto:steveniglesias@gmail.com) · [Retrato estático](./assets/generated/portrait-static.svg)
+### `> git log --contributions`
+
+\<picture>
+&#x20; \<source media="(max-width: 760px)" srcset="./assets/generated/contributions-mobile.svg">
+&#x20; \<img src="./assets/generated/contributions.svg" width="100%" alt="Calendario de contribuciones de GitHub generado automáticamente.">
+\</picture>
+
+---
+
+### `> cat tech-stack.json`
+
+\<picture>   \<source media="(max-width: 760px)" srcset="./assets/generated/skills-mobile.svg">   \<img src="./assets/generated/skills.svg" width="100%" alt="Tecnologías de desarrollo frontend, backend, bases de datos, DevOps y herramientas."> \</picture>
+
+---
+
+### `> ls ./featured-projects`
+
+\<table> \<tr> \<td width="100%">
+
+\<a href="[https://github.com/levets01/backeng_node](https://github.com/levets01/backeng_node)"> \<picture>   \<source media="(max-width: 760px)" srcset="./assets/generated/project-backeng-node-mobile.svg">   \<img src="./assets/generated/project-backeng-node.svg" width="100%" alt="Proyecto backend con TypeScript, Express, PostgreSQL y Docker."> \</picture> \</a>
+
+\</td> \</tr> \<tr> \<td>
+
+\<a href="[https://github.com/levets01/CONTROL_IVENTARIO-RIWI](https://github.com/levets01/CONTROL_IVENTARIO-RIWI)"> \<picture>   \<source media="(max-width: 760px)" srcset="./assets/generated/project-control-iventario-riwi-mobile.svg">   \<img src="./assets/generated/project-control-iventario-riwi.svg" width="100%" alt="Proyecto de gestión de inventarios desarrollado en Riwi."> \</picture> \</a>
+
+\</td> \</tr> \<tr> \<td>
+
+\<a href="[https://github.com/levets01/SALES-CONTROL_Riwi](https://github.com/levets01/SALES-CONTROL_Riwi)">
+\<picture>
+&#x20; \<source media="(max-width: 760px)" srcset="./assets/generated/project-sales-control-riwi-mobile.svg">
+&#x20; \<img src="./assets/generated/project-sales-control-riwi.svg" width="100%" alt="Proyecto de gestión de ventas desarrollado en Riwi.">
+\</picture>
+\</a>
+
+\</td> \</tr> \</table>
+
+\<div align="center">
+
+[**Explorar todos mis repositorios**](https://github.com/levets01?tab=repositories)
+
+\</div>
+
+---
+
+### `> cat about-me.md`
+
+```text
+$ whoami
+
+Name       : Stevel Iglesias
+Role       : Junior Software Developer
+Education  : SENA — ADSO (en formación)
+Community  : Riwi — Coder
+Location   : Colombia
+
+$ cat interests.txt
+
+[+] Full Stack Development
+[+] Defensive Cybersecurity
+[+] Artificial Intelligence
+[+] Software Architecture
+[+] Cloud Computing
+[+] Automation
+```
+
+Actualmente me encuentro fortaleciendo mis habilidades en desarrollo de software, construyendo soluciones que integran frontend, backend, bases de datos y herramientas de automatización.
+
+Me interesa especialmente desarrollar sistemas seguros, escalables y orientados a resolver problemas reales.
+
+---
+
+### `> git log --recent`
+
+\<details>
+\<summary>\<strong>Ver actividad pública reciente\</strong>\</summary>
+
+- 2026-11-17 UTC · Push · [Turno_Office](https://github.com/levets01/Turno_Office)
+- 2026-11-17 UTC · Push · [Turno_Office](https://github.com/levets01/Turno_Office)
+- 2026-11-17 UTC · Create · [Turno_Office](https://github.com/levets01/Turno_Office)
+
+\</details>
+
+---
+
+\<div align="center">
+
+### `> ./connect.sh`
+
+**¿Tienes un proyecto interesante o quieres colaborar?**
+
+\
+
+
+`Code · Learn · Build · Improve`
+
+\</div>
+
+\<!-- dashboard\:end -->
