@@ -24,8 +24,7 @@ Estudio Análisis y Desarrollo de Software en el SENA y desarrollo proyectos ful
 <details>
 <summary>Actividad pública reciente</summary>
 
-- 2026-11-17 UTC · Envío de cambios ×2 · [levets01/Turno_Office](https://github.com/levets01/Turno_Office)
-- 2026-11-17 UTC · Creación · [levets01/Turno_Office](https://github.com/levets01/Turno_Office)
+- 2026-11-19 UTC · Envío de cambios ×3 · [levets01/levets01](https://github.com/levets01/levets01)
 
 </details>
 

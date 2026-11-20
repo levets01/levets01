@@ -49,18 +49,18 @@
   "activity": [
     {
       "type": "PushEvent",
-      "repo": "levets01/Turno_Office",
-      "date": "2026-11-17"
+      "repo": "levets01/levets01",
+      "date": "2026-11-19"
     },
     {
       "type": "PushEvent",
-      "repo": "levets01/Turno_Office",
-      "date": "2026-11-17"
+      "repo": "levets01/levets01",
+      "date": "2026-11-19"
     },
     {
-      "type": "CreateEvent",
-      "repo": "levets01/Turno_Office",
-      "date": "2026-11-17"
+      "type": "PushEvent",
+      "repo": "levets01/levets01",
+      "date": "2026-11-19"
     }
   ],
   "calendar": {
@@ -433,8 +433,9 @@
       "2026-11-16": 0,
       "2026-11-17": 1,
       "2026-11-18": 0,
-      "2026-11-19": 2
+      "2026-11-19": 2,
+      "2026-11-20": 1
     },
-    "total": 450
+    "total": 451
   }
 }
